@@ -60,12 +60,10 @@ class WeatherActivity : AppCompatActivity() {
     private fun showSnackBar() {
         val snackbar =
             Snackbar.make(binding.root, "Something went wrong", Snackbar.LENGTH_INDEFINITE)
-
         snackbar.setAction("RETRY") {
             viewModel.fetchWeather(city = "Bengaluru")
             handleLoader(true)
         }
-
         snackbar.setActionTextColor(ContextCompat.getColor(this, R.color.deep_orange))
         snackbar.setBackgroundTint(ContextCompat.getColor(this, R.color.black))
         val textView =
