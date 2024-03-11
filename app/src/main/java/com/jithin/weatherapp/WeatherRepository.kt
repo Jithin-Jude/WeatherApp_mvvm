@@ -41,7 +41,7 @@ class WeatherRepository @Inject constructor(private val retrofit: Retrofit) {
                         val avgTemperature = forecasts.map { it.temperature.temp }.average()
                         WeatherForecastDay(day, kelvinToCelsius(avgTemperature))
                     }
-                    WeatherForecastData(days = listOfDays)
+                    WeatherForecastData(days = listOfDays.drop(1))
                 }
             } else {
                 null
