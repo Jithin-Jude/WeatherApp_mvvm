@@ -14,9 +14,9 @@ class WeatherRepository @Inject constructor(private val retrofit: Retrofit) {
                 val weatherResponse = response.body()
                 weatherResponse?.let {
                     WeatherData(
-                        weatherResponse.temperature,
-                        weatherResponse.humidity,
-                        weatherResponse.description
+                        weatherResponse.currentTemperature.temp,
+                        weatherResponse.currentTemperature.humidity,
+                        weatherResponse.weather.firstOrNull()?.description ?: ""
                     )
                 }
             } else {

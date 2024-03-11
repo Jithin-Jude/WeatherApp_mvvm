@@ -6,8 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,7 +21,7 @@ class WeatherViewModel @Inject constructor(private val repository: WeatherReposi
 
             val result = repository.getWeatherData(city)
             result?.let {
-                _weatherData.value = it
+                _weatherData.postValue(it)
             }
         }
     }
