@@ -7,16 +7,16 @@ import javax.inject.Inject
 
 class WeatherRepository @Inject constructor(private val retrofit: Retrofit) {
 
-    suspend fun getWeatherData(city: String): WeatherData? {
+    suspend fun getWeatherData(city: String): CurrentWeatherData? {
         return try {
-            val response = retrofit.create(WeatherService::class.java).getWeather(city, "9b8cb8c7f11c077f8c4e217974d9ee40")
+            val response = retrofit.create(WeatherService::class.java)
+                .getWeather(city, "9b8cb8c7f11c077f8c4e217974d9ee40")
             if (response.isSuccessful) {
                 val weatherResponse = response.body()
                 weatherResponse?.let {
-                    WeatherData(
+                    CurrentWeatherData(
                         weatherResponse.currentTemperature.temp,
-                        weatherResponse.currentTemperature.humidity,
-                        weatherResponse.weather.firstOrNull()?.description ?: ""
+                        weatherResponse.name ?: ""
                     )
                 }
             } else {
