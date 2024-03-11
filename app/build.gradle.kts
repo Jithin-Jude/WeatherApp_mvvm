@@ -65,4 +65,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
 
     implementation("androidx.activity:activity-ktx:1.4.0")
+
+    // Timber - For logging
+    implementation("com.jakewharton.timber:timber:5.0.1")
 }

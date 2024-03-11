@@ -34,14 +34,12 @@ class WeatherRepository @Inject constructor(private val retrofit: Retrofit) {
             if (response.isSuccessful) {
                 val weatherForecastResponse = response.body()
                 weatherForecastResponse?.let {
-                    val listOfDays = mutableListOf<WeatherForecastDay>()
-                    for (weather in weatherForecastResponse.weatherList) {
-                        listOfDays.add(
-                            WeatherForecastDay(
-                                day = "Monday",
-                                avgTemperature = weather.temperature.temp
-                            )
-                        )
+                    val groupedByDay = weatherForecastResponse.weatherList.groupBy {
+                        getDayOfWeek(it.dt)
+                    }
+                    val listOfDays = groupedByDay.map { (day, forecasts) ->
+                        val avgTemperature = forecasts.map { it.temperature.temp }.average()
+                        WeatherForecastDay(day, avgTemperature)
                     }
                     WeatherForecastData(days = listOfDays)
                 }
