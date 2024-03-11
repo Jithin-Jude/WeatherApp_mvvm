@@ -34,6 +34,8 @@ class WeatherActivity : AppCompatActivity() {
                 Toast.LENGTH_LONG
             )
                 .show()
+            val bottomSheet = ForecastBottomSheetDialogFragment()
+            bottomSheet.show(supportFragmentManager, bottomSheet.tag)
         }
     }
 
