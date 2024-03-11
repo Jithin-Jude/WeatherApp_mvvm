@@ -69,4 +69,7 @@ dependencies {
 
     // Timber - For logging
     implementation("com.jakewharton.timber:timber:5.0.1")
+
+    // Lottie for animation
+    implementation("com.airbnb.android:lottie:6.4.0")
 }

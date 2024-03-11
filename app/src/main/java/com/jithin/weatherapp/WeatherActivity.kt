@@ -1,7 +1,7 @@
 package com.jithin.weatherapp
 
 import android.os.Bundle
-import android.widget.Toast
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.jithin.weatherapp.databinding.ActivityWeatherBinding
@@ -19,24 +19,18 @@ class WeatherActivity : AppCompatActivity() {
 
         observeViewModel()
         viewModel.fetchWeather(city = "Bengaluru")
+        handleLoader(true)
     }
 
     private fun observeViewModel() {
         viewModel.currentWeatherData.observe(this) { weatherData ->
-            Toast.makeText(this, "CURRENT_TEMP :=> ${weatherData.temperature}", Toast.LENGTH_LONG)
-                .show()
             updateUI(weatherData.temperature, weatherData.cityName)
         }
         viewModel.weatherForecastData.observe(this) { weatherForecastData ->
-            Toast.makeText(
-                this,
-                "WEATHER_FORECAST :=> ${weatherForecastData.days.size}",
-                Toast.LENGTH_LONG
-            )
-                .show()
             val bottomSheet =
                 ForecastBottomSheetDialogFragment.newInstance(weatherForecastData.days)
             bottomSheet.show(supportFragmentManager, bottomSheet.tag)
+            handleLoader(false)
         }
     }
 
@@ -44,5 +38,13 @@ class WeatherActivity : AppCompatActivity() {
         val tempInCelsius = kelvinToCelsius(temperature)
         binding.tvCityTemperature.text = "$tempInCelsius\u00B0"
         binding.tvCityName.text = cityName
+    }
+
+    private fun handleLoader(show: Boolean) {
+        if (show) {
+            binding.loadingView.visibility = View.VISIBLE
+        } else {
+            binding.loadingView.visibility = View.GONE
+        }
     }
 }

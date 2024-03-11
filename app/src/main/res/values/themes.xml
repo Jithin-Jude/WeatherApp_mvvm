@@ -16,7 +16,6 @@
     <style name="CustomBottomSheetAnimation" parent="@android:style/Animation">
         <!-- Define custom animation styles for your bottom sheet -->
         <item name="android:windowEnterAnimation">@anim/slide_up</item>
-        <item name="android:windowExitAnimation">@anim/slide_down</item>
     </style>
 
 </resources>
