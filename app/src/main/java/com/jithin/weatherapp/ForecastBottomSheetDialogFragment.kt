@@ -14,6 +14,7 @@ class ForecastBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
     private var _binding: LayoutWeatherBottomSheetBinding? = null
     private val binding get() = _binding!!
+    private lateinit var forecastDays: List<WeatherForecastDay>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +33,11 @@ class ForecastBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        forecastDays = arguments?.getParcelableArrayList(ARG_FORECAST_DAYS) ?: emptyList()
+
+        val adapter = WeatherForecastAdapter(forecastDays)
+        binding.recyclerViewWeatherForecast.adapter = adapter
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -45,5 +51,17 @@ class ForecastBottomSheetDialogFragment : BottomSheetDialogFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        private const val ARG_FORECAST_DAYS = "forecast_days"
+        fun newInstance(forecastDays: List<WeatherForecastDay>): ForecastBottomSheetDialogFragment {
+            val fragment = ForecastBottomSheetDialogFragment()
+            val args = Bundle().apply {
+                putParcelableArrayList(ARG_FORECAST_DAYS, ArrayList(forecastDays))
+            }
+            fragment.arguments = args
+            return fragment
+        }
     }
 }

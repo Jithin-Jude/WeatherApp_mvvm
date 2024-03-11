@@ -2,15 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/transparent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <!-- Your content for the bottom sheet goes here -->
-
-    <View
-        android:id="@+id/bottomSheetButton"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewWeatherForecast"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
-        android:background="@color/white"
-        android:elevation="100dp" />
+        android:layout_height="wrap_content"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 </LinearLayout>
