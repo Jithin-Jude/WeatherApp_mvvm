@@ -12,16 +12,24 @@ import javax.inject.Inject
 @HiltViewModel
 class WeatherViewModel @Inject constructor(private val repository: WeatherRepository) : ViewModel() {
 
-    private val _Current_weatherData = MutableLiveData<CurrentWeatherData>()
+    private val _currentWeatherData = MutableLiveData<CurrentWeatherData>()
     val currentWeatherData: LiveData<CurrentWeatherData>
-        get() = _Current_weatherData
+        get() = _currentWeatherData
+
+    private val _weatherForecastData = MutableLiveData<WeatherForecastData>()
+    val weatherForecastData: LiveData<WeatherForecastData>
+        get() = _weatherForecastData
 
     fun fetchWeather(city: String) {
         viewModelScope.launch(Dispatchers.IO) {
 
-            val result = repository.getWeatherData(city)
+            val result = repository.getCurrentWeatherData(city)
+            val resultWeatherForecast = repository.getForecastData(city)
             result?.let {
-                _Current_weatherData.postValue(it)
+                _currentWeatherData.postValue(it)
+            }
+            resultWeatherForecast?.let {
+                _weatherForecastData.postValue(it)
             }
         }
     }

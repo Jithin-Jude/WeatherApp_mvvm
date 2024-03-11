@@ -27,6 +27,14 @@ class WeatherActivity : AppCompatActivity() {
                 .show()
             updateUI(weatherData.temperature, weatherData.cityName)
         }
+        viewModel.weatherForecastData.observe(this) { weatherForecastData ->
+            Toast.makeText(
+                this,
+                "WEATHER_FORECAST :=> ${weatherForecastData.days.size}",
+                Toast.LENGTH_LONG
+            )
+                .show()
+        }
     }
 
     private fun updateUI(temperature: Double, cityName: String) {

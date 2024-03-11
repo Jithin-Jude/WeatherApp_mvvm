@@ -3,7 +3,7 @@ package com.jithin.weatherapp
 import com.google.gson.annotations.SerializedName
 
 
-data class WeatherResponse(
+data class CurrentWeatherResponse(
     @SerializedName("coord") val coordinates: Coord,
     @SerializedName("weather") val weather: List<Weather>,
     @SerializedName("base") val base: String,
@@ -17,6 +17,37 @@ data class WeatherResponse(
     @SerializedName("id") val id: Int,
     @SerializedName("name") val name: String,
     @SerializedName("cod") val cod: Int
+)
+
+data class WeatherForecastResponse(
+    @SerializedName("cod") val cod: String,
+    @SerializedName("message") val message: Int,
+    @SerializedName("cnt") val count: Int,
+    @SerializedName("list") val weatherList: List<WeatherData>,
+    @SerializedName("city") val city: City
+)
+
+data class WeatherData(
+    @SerializedName("dt") val dt: Long,
+    @SerializedName("main") val temperature: CurrentTemperature,
+    @SerializedName("weather") val weather: List<Weather>,
+    @SerializedName("clouds") val clouds: Clouds,
+    @SerializedName("wind") val wind: Wind,
+    @SerializedName("visibility") val visibility: Int,
+    @SerializedName("pop") val pop: Int,
+    @SerializedName("sys") val sys: Sys,
+    @SerializedName("dt_txt") val dtTxt: String
+)
+
+data class City(
+    @SerializedName("id") val id: Int,
+    @SerializedName("name") val name: String,
+    @SerializedName("coord") val coordinates: Coord,
+    @SerializedName("country") val country: String,
+    @SerializedName("population") val population: Int,
+    @SerializedName("timezone") val timezone: Int,
+    @SerializedName("sunrise") val sunrise: Long,
+    @SerializedName("sunset") val sunset: Long
 )
 
 data class Coord(

@@ -5,10 +5,15 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface WeatherService {
-
     @GET("weather")
-    suspend fun getWeather(
+    suspend fun getCurrentWeather(
         @Query("q") city: String,
-        @Query("APPID") apiKey: String = "9b8cb8c7f11c077f8c4e217974d9ee40"
-    ): Response<WeatherResponse>
+        @Query("APPID") apiKey: String = Constants.OPEN_WEATHER_MAP_API_KEY
+    ): Response<CurrentWeatherResponse>
+
+    @GET("forecast")
+    suspend fun getForecast(
+        @Query("q") city: String,
+        @Query("APPID") apiKey: String = Constants.OPEN_WEATHER_MAP_API_KEY
+    ): Response<WeatherForecastResponse>
 }

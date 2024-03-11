@@ -7,17 +7,43 @@ import javax.inject.Inject
 
 class WeatherRepository @Inject constructor(private val retrofit: Retrofit) {
 
-    suspend fun getWeatherData(city: String): CurrentWeatherData? {
+    val apiService = retrofit.create(WeatherService::class.java)
+
+    suspend fun getCurrentWeatherData(city: String): CurrentWeatherData? {
         return try {
-            val response = retrofit.create(WeatherService::class.java)
-                .getWeather(city, "9b8cb8c7f11c077f8c4e217974d9ee40")
+            val response = apiService.getCurrentWeather(city)
             if (response.isSuccessful) {
                 val weatherResponse = response.body()
                 weatherResponse?.let {
                     CurrentWeatherData(
                         weatherResponse.currentTemperature.temp,
-                        weatherResponse.name ?: ""
+                        weatherResponse.name
                     )
+                }
+            } else {
+                null
+            }
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    suspend fun getForecastData(city: String): WeatherForecastData? {
+        return try {
+            val response = apiService.getForecast(city)
+            if (response.isSuccessful) {
+                val weatherForecastResponse = response.body()
+                weatherForecastResponse?.let {
+                    val listOfDays = mutableListOf<WeatherForecastDay>()
+                    for (weather in weatherForecastResponse.weatherList) {
+                        listOfDays.add(
+                            WeatherForecastDay(
+                                day = "Monday",
+                                avgTemperature = weather.temperature.temp
+                            )
+                        )
+                    }
+                    WeatherForecastData(days = listOfDays)
                 }
             } else {
                 null
