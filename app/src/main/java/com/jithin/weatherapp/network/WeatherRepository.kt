@@ -2,6 +2,7 @@ package com.jithin.weatherapp.network
 
 // WeatherRepository.kt
 
+import android.util.Log
 import com.jithin.weatherapp.getDayOfWeek
 import com.jithin.weatherapp.kelvinToCelsius
 import com.jithin.weatherapp.model.CurrentWeatherData
@@ -52,7 +53,20 @@ class WeatherRepository @Inject constructor(private val retrofit: Retrofit) {
                         val avgTemperature = forecasts.map { it.temperature.temp }.average()
                         WeatherForecastDay(day, kelvinToCelsius(avgTemperature))
                     }
-                    val data = WeatherForecastData(days = listOfDays.drop(1))
+                    // Current day
+                    val today = getDayOfWeek(System.currentTimeMillis() / 1000)
+                    Log.d("TAG", "TODAY :=> ${today}")
+                    // Find the index of today in the list
+                    val nextDayIndex = listOfDays.indexOfFirst { it.day == today } + 1
+                    // Get the sublist containing the next 4 days
+                    val nextFourDays = if (nextDayIndex > 0) {
+                        // If today is found in the list, get the next 4 days
+                        listOfDays.subList(nextDayIndex, minOf(nextDayIndex + 4, listOfDays.size))
+                    } else {
+                        // If today is not found in the list, start from the first day
+                        listOfDays.subList(0, minOf(4, listOfDays.size))
+                    }
+                    val data = WeatherForecastData(days = nextFourDays)
                     emit(DataState.Success(data))
                 } ?: kotlin.run {
                     emit(DataState.Error(Exception(response.message())))
