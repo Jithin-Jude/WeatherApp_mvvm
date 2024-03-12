@@ -20,17 +20,43 @@ class WeatherViewModel @Inject constructor(private val repository: WeatherReposi
     val weatherForecastData: LiveData<WeatherForecastData?>
         get() = _weatherForecastData
 
+    private val _loader = MutableLiveData<Boolean>()
+    val loader: LiveData<Boolean>
+        get() = _loader
+
     fun fetchWeather(city: String) {
         viewModelScope.launch(Dispatchers.IO) {
+            repository.getCurrentWeatherData(city).collect { result ->
+                when (result) {
+                    is DataState.Loading -> {
+                        _loader.postValue(true)
+                    }
 
-            val result = repository.getCurrentWeatherData(city)
-            val resultWeatherForecast = repository.getForecastData(city)
+                    is DataState.Success -> {
+                        _currentWeatherData.postValue(result.data)
+                    }
 
-            if (result != null && resultWeatherForecast != null) {
-                _currentWeatherData.postValue(result)
-                _weatherForecastData.postValue(resultWeatherForecast)
-            } else {
-                _weatherForecastData.postValue(null)
+                    is DataState.Error -> {
+                        _currentWeatherData.postValue(null)
+                    }
+                }
+            }
+            repository.getForecastData(city).collect { result ->
+                when (result) {
+                    is DataState.Loading -> {
+                        _loader.postValue(true)
+                    }
+
+                    is DataState.Success -> {
+                        _weatherForecastData.postValue(result.data)
+                        _loader.postValue(false)
+                    }
+
+                    is DataState.Error -> {
+                        _weatherForecastData.postValue(null)
+                        _loader.postValue(false)
+                    }
+                }
             }
         }
     }

@@ -20,17 +20,18 @@ class WeatherActivity : AppCompatActivity() {
         binding = ActivityWeatherBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        observeViewModel()
+        observeWeatherData()
+        observeLoader()
         viewModel.fetchWeather(city = "Bengaluru")
-        handleLoader(true)
     }
 
-    private fun observeViewModel() {
+    private fun observeWeatherData() {
         viewModel.currentWeatherData.observe(this) { weatherData ->
-            updateUI(weatherData?.temperature, weatherData?.cityName)
+            weatherData?.let {
+                updateCurrentWeatherUI(it.temperature, it.cityName)
+            }
         }
         viewModel.weatherForecastData.observe(this) { weatherForecastData ->
-            handleLoader(false)
             if (weatherForecastData != null) {
                 val bottomSheet =
                     ForecastBottomSheetDialogFragment.newInstance(
@@ -43,18 +44,20 @@ class WeatherActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateUI(temperature: Double?, cityName: String?) {
+    private fun observeLoader() {
+        viewModel.loader.observe(this) { show ->
+            if (show) {
+                binding.loadingView.visibility = View.VISIBLE
+            } else {
+                binding.loadingView.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun updateCurrentWeatherUI(temperature: Double?, cityName: String?) {
         val tempInCelsius = kelvinToCelsius(temperature ?: 0.0)
         binding.tvCityTemperature.text = "$tempInCelsius\u00B0"
         binding.tvCityName.text = cityName
-    }
-
-    private fun handleLoader(show: Boolean) {
-        if (show) {
-            binding.loadingView.visibility = View.VISIBLE
-        } else {
-            binding.loadingView.visibility = View.GONE
-        }
     }
 
     private fun showSnackBar() {
@@ -62,7 +65,6 @@ class WeatherActivity : AppCompatActivity() {
             Snackbar.make(binding.root, "Something went wrong", Snackbar.LENGTH_INDEFINITE)
         snackbar.setAction("RETRY") {
             viewModel.fetchWeather(city = "Bengaluru")
-            handleLoader(true)
         }
         snackbar.setActionTextColor(ContextCompat.getColor(this, R.color.deep_orange))
         snackbar.setBackgroundTint(ContextCompat.getColor(this, R.color.black))
