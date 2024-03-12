@@ -10,6 +10,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.jithin.weatherapp.R
 import com.jithin.weatherapp.databinding.ActivityWeatherBinding
 import com.jithin.weatherapp.kelvinToCelsius
+import com.jithin.weatherapp.model.WeatherForecastDay
 import com.jithin.weatherapp.viewmodel.WeatherViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -36,11 +37,7 @@ class WeatherActivity : AppCompatActivity() {
         }
         viewModel.weatherForecastData.observe(this) { weatherForecastData ->
             if (weatherForecastData != null) {
-                val bottomSheet =
-                    ForecastBottomSheetDialogFragment.newInstance(
-                        weatherForecastData?.days ?: emptyList()
-                    )
-                bottomSheet.show(supportFragmentManager, bottomSheet.tag)
+                openForecastBottomSheet(weatherForecastData.days)
             } else {
                 showSnackBar()
             }
@@ -61,6 +58,14 @@ class WeatherActivity : AppCompatActivity() {
         val tempInCelsius = kelvinToCelsius(temperature ?: 0.0)
         binding.tvCityTemperature.text = "$tempInCelsius\u00B0"
         binding.tvCityName.text = cityName
+    }
+
+    private fun openForecastBottomSheet(weatherForecastDays: List<WeatherForecastDay>) {
+        val bottomSheet =
+            ForecastBottomSheetDialogFragment.newInstance(
+                weatherForecastDays
+            )
+        bottomSheet.show(supportFragmentManager, bottomSheet.tag)
     }
 
     private fun showSnackBar() {
