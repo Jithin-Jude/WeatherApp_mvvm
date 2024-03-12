@@ -1,4 +1,4 @@
-package com.jithin.weatherapp
+package com.jithin.weatherapp.network
 
 import com.google.gson.annotations.SerializedName
 

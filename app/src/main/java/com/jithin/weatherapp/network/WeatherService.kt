@@ -1,5 +1,6 @@
-package com.jithin.weatherapp
+package com.jithin.weatherapp.network
 
+import com.jithin.weatherapp.Constants
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

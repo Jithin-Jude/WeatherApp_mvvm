@@ -1,4 +1,4 @@
-package com.jithin.weatherapp
+package com.jithin.weatherapp.ui
 
 import android.app.Dialog
 import android.os.Bundle
@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.jithin.weatherapp.R
 import com.jithin.weatherapp.databinding.LayoutWeatherBottomSheetBinding
+import com.jithin.weatherapp.model.WeatherForecastDay
 
 class ForecastBottomSheetDialogFragment : BottomSheetDialogFragment() {
 

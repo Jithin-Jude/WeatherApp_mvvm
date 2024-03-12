@@ -1,9 +1,13 @@
-package com.jithin.weatherapp
+package com.jithin.weatherapp.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jithin.weatherapp.model.CurrentWeatherData
+import com.jithin.weatherapp.model.WeatherForecastData
+import com.jithin.weatherapp.network.DataState
+import com.jithin.weatherapp.network.WeatherRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

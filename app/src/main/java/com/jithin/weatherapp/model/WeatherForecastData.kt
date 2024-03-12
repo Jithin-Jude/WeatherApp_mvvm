@@ -1,4 +1,4 @@
-package com.jithin.weatherapp
+package com.jithin.weatherapp.model
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

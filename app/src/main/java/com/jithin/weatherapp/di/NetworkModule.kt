@@ -1,4 +1,4 @@
-package com.jithin.weatherapp
+package com.jithin.weatherapp.di
 
 import dagger.Module
 import dagger.Provides

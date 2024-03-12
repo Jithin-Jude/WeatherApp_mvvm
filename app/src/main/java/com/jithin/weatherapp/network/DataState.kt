@@ -1,4 +1,4 @@
-package com.jithin.weatherapp
+package com.jithin.weatherapp.network
 
 sealed class DataState<out R> {
     data class Success<out T>(val data: T) : DataState<T>()

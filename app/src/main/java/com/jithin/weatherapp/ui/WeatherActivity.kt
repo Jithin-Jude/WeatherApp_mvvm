@@ -1,4 +1,4 @@
-package com.jithin.weatherapp
+package com.jithin.weatherapp.ui
 
 import android.os.Bundle
 import android.view.View
@@ -7,7 +7,10 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
+import com.jithin.weatherapp.R
 import com.jithin.weatherapp.databinding.ActivityWeatherBinding
+import com.jithin.weatherapp.kelvinToCelsius
+import com.jithin.weatherapp.viewmodel.WeatherViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

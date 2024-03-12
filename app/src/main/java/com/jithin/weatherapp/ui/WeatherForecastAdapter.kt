@@ -1,10 +1,11 @@
-package com.jithin.weatherapp
+package com.jithin.weatherapp.ui
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.jithin.weatherapp.databinding.LayoutForecastItemBinding
+import com.jithin.weatherapp.model.WeatherForecastDay
 
 class WeatherForecastAdapter(private val weatherForecastDays: List<WeatherForecastDay>) :
     RecyclerView.Adapter<WeatherForecastAdapter.ViewHolder>() {

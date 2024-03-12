@@ -1,7 +1,12 @@
-package com.jithin.weatherapp
+package com.jithin.weatherapp.network
 
 // WeatherRepository.kt
 
+import com.jithin.weatherapp.getDayOfWeek
+import com.jithin.weatherapp.kelvinToCelsius
+import com.jithin.weatherapp.model.CurrentWeatherData
+import com.jithin.weatherapp.model.WeatherForecastData
+import com.jithin.weatherapp.model.WeatherForecastDay
 import kotlinx.coroutines.flow.flow
 import retrofit2.Retrofit
 import javax.inject.Inject
