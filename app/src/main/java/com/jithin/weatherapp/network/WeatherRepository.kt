@@ -18,6 +18,7 @@ class WeatherRepository @Inject constructor(private val retrofit: Retrofit) {
             if (response.isSuccessful) {
                 val weatherResponse = response.body()
                 weatherResponse?.let {
+                    // just mapping only no business logic
                     val data = CurrentWeatherData(
                         weatherResponse.currentTemperature.temp,
                         weatherResponse.name
