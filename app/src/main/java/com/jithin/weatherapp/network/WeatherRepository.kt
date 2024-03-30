@@ -2,14 +2,29 @@ package com.jithin.weatherapp.network
 
 // WeatherRepository.kt
 
+import com.jithin.weatherapp.database.Temperature
+import com.jithin.weatherapp.database.TemperatureDao
 import com.jithin.weatherapp.model.CurrentWeatherData
 import kotlinx.coroutines.flow.flow
 import retrofit2.Retrofit
 import javax.inject.Inject
 
-class WeatherRepository @Inject constructor(private val retrofit: Retrofit) {
+class WeatherRepository @Inject constructor(
+    private val retrofit: Retrofit,
+    private val temperatureDao: TemperatureDao
+) {
 
     val apiService = retrofit.create(WeatherService::class.java)
+
+    suspend fun insertTemperatures(temperature: Temperature) {
+        temperatureDao.insertTemperature(temperature)
+    }
+
+    suspend fun fetchAllTemperatures() = flow<DataState<List<Temperature>>> {
+        emit(DataState.Loading)
+        val list = temperatureDao.getAllTemperatures()
+        emit(DataState.Success(list))
+    }
 
     suspend fun getCurrentWeatherData(city: String) = flow<DataState<CurrentWeatherData>> {
         try {

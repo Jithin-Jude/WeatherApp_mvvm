@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jithin.weatherapp.database.Temperature
 import com.jithin.weatherapp.getDayOfWeek
 import com.jithin.weatherapp.kelvinToCelsius
 import com.jithin.weatherapp.model.CurrentWeatherData
@@ -32,6 +33,42 @@ class WeatherViewModel @Inject constructor(private val repository: WeatherReposi
     private val _loader = MutableLiveData<Boolean>()
     val loader: LiveData<Boolean>
         get() = _loader
+
+    fun insertTemperature(currentWeatherData: CurrentWeatherData) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val temp = Temperature(
+                id = System.currentTimeMillis().toString(),
+                temperature = currentWeatherData.temperature.toString()
+            )
+            repository.insertTemperatures(temp)
+        }
+    }
+
+    fun fetchAllTemperatures() {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.fetchAllTemperatures().collect { result ->
+                when (result) {
+                    is DataState.Loading -> {
+                        Log.d("TAG", "fetchAllTemperatures :=> Loading")
+                    }
+
+                    is DataState.Success -> {
+                        Log.d("TAG", "fetchAllTemperatures :=> Success: ${result.data.size}")
+                        result.data.forEachIndexed { index, temperature ->
+                            Log.d(
+                                "TAG",
+                                "fetchAllTemperatures :=> each: ${temperature.id} = ${temperature.temperature}"
+                            )
+                        }
+                    }
+
+                    is DataState.Error -> {
+                        Log.d("TAG", "fetchAllTemperatures :=> Error")
+                    }
+                }
+            }
+        }
+    }
 
     fun fetchWeather(city: String) {
         viewModelScope.launch(Dispatchers.IO) {

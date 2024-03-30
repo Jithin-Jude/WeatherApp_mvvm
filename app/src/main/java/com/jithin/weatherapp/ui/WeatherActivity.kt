@@ -27,11 +27,13 @@ class WeatherActivity : AppCompatActivity() {
         observeWeatherData()
         observeLoader()
         viewModel.fetchWeather(city = "Bengaluru")
+        viewModel.fetchAllTemperatures()
     }
 
     private fun observeWeatherData() {
         viewModel.currentWeatherData.observe(this) { weatherData ->
             weatherData?.let {
+                viewModel.insertTemperature(it)
                 updateCurrentWeatherUI(it.temperature, it.cityName)
             }
         }
